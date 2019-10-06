@@ -2,6 +2,7 @@
 Example code for blog post on dll communication with Delphi
 
 ``` pascal
+//Transmit records one by one
  TTXer.Send<TxLineRec>( 
     procedure(var ARec: TxLineRec) 
     begin
@@ -12,11 +13,12 @@ Example code for blog post on dll communication with Delphi
     end
   );
   
+ // Transmit records as an array (pointer and count)
   TTxer.Send<TxPolyLineRec>(FPolylines.Count, 
-  Procedure(var ARec: TxPolyLineRec; AIdx: integer)
-  begin
-    ARec.VertexCount := Length(FPolylines[AIdx].Vertices);
-    ARec.Vertices := FPolylines[AIdx].Vertices;  
-  end
+    Procedure(var ARec: TxPolyLineRec; AIdx: integer)
+    begin
+      ARec.VertexCount := Length(FPolylines[AIdx].Vertices);
+      ARec.Vertices := FPolylines[AIdx].Vertices;  
+    end
   );
 ```
