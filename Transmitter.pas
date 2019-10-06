@@ -26,22 +26,34 @@ implementation
 
 {$DEFINE TESTFRAME}
 {$IFDEF TESTFRAME}
-
+//This section is just a sample of how a receiver may implement the exports
 uses
   Windows, ReceiveRecords;
 
-procedure SendTxRecords(APTxRec: PTxRec; ACount: integer); stdcall;
+procedure SendTxRecords(APRxRec: PRxRec; ACount: integer); stdcall;
 begin
-  // emulate the dll receiving the records
+//   case APRXRec.RecType of
+//    RxRectType_Point :
+//      ReceivePoints(PRxPointRec(APRxRec), ACount);
+//    RxRectType_Line :
+//      ReceiveLines(PRxLineRec(APRxRec), ACount);
+//    RxRectType_Arc :
+//      ReceiveArcs(PRxArcRec(APRxRec), ACount);
+//    RxRectType_Polyline :
+//      ReceivePollines(PRxPolyLineRec(APRxRec), ACount);
+//    RxRectType_GeometryList :
+//      ReceivePollines(RxGeometryListRec(APRxRec), ACount);
+//  end;
 end;
 
-procedure SendTxRecord(APTxRec: PTxRec); stdcall;
+procedure SendTxRecord(APRxRec: PRxRec); stdcall;
 begin
-  SendTxRecords(APTxRec, 1);
+  SendTxRecords(APRxRec, 1);
 end;
-
+//End of sample section
 {$ELSE}
 
+// In a real implementation the DLL methods would be statically or dynamically linked
 const
   DLLName = 'dllname.dll';
 
