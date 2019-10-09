@@ -1,6 +1,8 @@
 # data-transmission-delphi
 Example code for blog post on dll communication with Delphi
 
+https://schellingerhout.github.io/tags/#data-transmission
+
 ``` pascal
 //Transmit records one by one
  TTXer.Send<TxLineRec>( 
