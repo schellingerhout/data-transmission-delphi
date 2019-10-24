@@ -9,7 +9,7 @@ https://schellingerhout.github.io/tags/#data-transmission
     procedure(var ARec: TxLineRec) 
     begin
       ARec.p1.x := 0.5;
-      ARec.p2.y := 0.25;
+      ARec.p1.y := 0.25;
       ARec.p2.x := 1.0;
       ARec.p2.y := 2.0;
     end
