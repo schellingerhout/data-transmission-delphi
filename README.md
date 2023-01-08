@@ -1,7 +1,11 @@
 # data-transmission-delphi
 Example code for blog post on dll communication with Delphi
 
-https://schellingerhout.github.io/data%20transmission/datatransmission1/
+[Part 1: Pointers and Structures](https://schellingerhout.github.io/data%20transmission/datatransmission1/)
+
+[Part 2: Arrays and Pointer Math](https://schellingerhout.github.io/data%20transmission/datatransmission2/)
+
+[Part 3: Transmitting and Interpreting Data](https://schellingerhout.github.io/data%20transmission/datatransmission3/)
 
 ``` pascal
 //Transmit records one by one
