@@ -18,6 +18,7 @@ Type
     class procedure SendRecord(ARecord: PTxRec); static;
     class procedure SendRecords(ARecordArray: PTxRec; ACount: integer); static;
 
+    class procedure Send<T>(); overload;  // signal type, no configured data
     class procedure Send<T>(AConfigureProc: TSendConfigProc<T>); overload;
     class procedure Send<T>(ANumRecords: integer; AConfigureProc: TSendConfigProcIter<T>); overload;
   end;
@@ -30,21 +31,35 @@ implementation
 uses
   Windows, ReceiveRecords;
 
+procedure ReceivePoints(Rec: PRxPointRec; Count: integer);
+begin
+ // Use Pointer arithmetic to walk the PRxPointRec array
+   while Count > 0 do
+   begin
+     // Rec^ is a TRxPointRec... process as needed
+     Inc(Rec);   //advance to next item in array
+     Dec(Count);
+   end;
+end;
+
+
 procedure SendTxRecords(APRxRec: PRxRec; ACount: integer); stdcall;
 begin
-//   case APRXRec.RecType of
-//    RxRectType_Point :
-//      ReceivePoints(PRxPointRec(APRxRec), ACount);
+   case APRXRec.RecType of
+    RxRectType_Point :
+      ReceivePoints(PRxPointRec(APRxRec), ACount);
+// use the pattern above for other types
 //    RxRectType_Line :
 //      ReceiveLines(PRxLineRec(APRxRec), ACount);
-//    RxRectType_Arc :
+//   RxRectType_Arc :
 //      ReceiveArcs(PRxArcRec(APRxRec), ACount);
 //    RxRectType_Polyline :
 //      ReceivePollines(PRxPolyLineRec(APRxRec), ACount);
 //    RxRectType_GeometryList :
-//      ReceivePollines(RxGeometryListRec(APRxRec), ACount);
-//  end;
+//      ReceivePollines(PRxGeometryListRec(APRxRec), ACount);
+  end;
 end;
+
 
 procedure SendTxRecord(APRxRec: PRxRec); stdcall;
 begin
@@ -65,7 +80,11 @@ procedure SendTxRecords(APTxRec: PTxRec; ACount: integer); stdcall; external DLL
 
 class procedure TTxer.SendRecords(ARecordArray: PTxRec; ACount: integer);
 begin
+ {$IFDEF TESTFRAME}
+   SendTxRecords(PRxRec(ARecordArray), ACount); // direct cast to emulate reader's interpretation
+ {$ELSE}
   SendTxRecords(ARecordArray, ACount); // dll call
+ {$ENDIF}
 end;
 
 class procedure TTxer.Send<T>(ANumRecords: integer; AConfigureProc: TSendConfigProcIter<T>);
@@ -76,27 +95,35 @@ Var
 begin
   SetLength(LDynArray, ANumRecords);
 
-  LDefault := TxRec.Default<T>;
-
   for i := 0 to ANumRecords - 1 do
-  begin
-    LDynArray[i] := LDefault;
     AConfigureProc(LDynArray[i], i);
-  end;
-  SendRecords(@LDynArray[0], ANumRecords);
 
+  SendRecords(@LDynArray[0], ANumRecords);
 end;
+
 
 class procedure TTxer.SendRecord(ARecord: PTxRec);
 begin
+ {$IFDEF TESTFRAME}
+   SendTxRecord(PRxRec(ARecord));  // direct cast to emulate reader's interpretation
+ {$ELSE}
   SendTxRecord(ARecord); // dll call
+ {$ENDIF}
+end;
+
+// signal types require no configuration they may define bounds of certain data, signal the requirement
+// of action on the receiver side, or notify of simple events
+class procedure TTxer.Send<T>;
+Var
+  L: T;
+begin
+  SendRecord(@L);
 end;
 
 class procedure TTxer.Send<T>(AConfigureProc: TSendConfigProc<T>);
 Var
   L: T;
 begin
-  L := TxRec.Default<T>;
   AConfigureProc(L);
   SendRecord(@L);
 end;
