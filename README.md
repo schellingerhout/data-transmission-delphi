@@ -28,3 +28,5 @@ Example code for blog post on dll communication with Delphi
     end
   );
 ```
+
+This branch has code specifically for Delphi 10.4 and up
