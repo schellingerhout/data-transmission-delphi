@@ -28,3 +28,5 @@ Example code for blog post on dll communication with Delphi
     end
   );
 ```
+
+To see code that uses the new Intializer syntax provided in Delphi 10.4 and up please switch to the [Delphi 10.4 branch](https://github.com/schellingerhout/data-transmission-delphi/tree/Delphi10.4)
