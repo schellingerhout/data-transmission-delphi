@@ -1,4 +1,6 @@
 # data-transmission-delphi
+Please note that unlike the master branch the code here has not been tested in consumers such as C++
+
 Example code for blog post on dll communication with Delphi
 
 [Part 1: Pointers and Structures](https://schellingerhout.github.io/data%20transmission/datatransmission1/)
