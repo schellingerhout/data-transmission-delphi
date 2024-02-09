@@ -31,4 +31,5 @@ Example code for blog post on dll communication with Delphi
   );
 ```
 
-This branch has code specifically for Delphi 10.4 and up
+This branch has code specifically for Delphi 10.4 and up. To read about revisiting and improving the code with new constructs please see
+[Data Transmission with Delphi Redux](https://schellingerhout.github.io/data%20transmission/datatransmission-redux/)
